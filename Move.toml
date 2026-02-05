@@ -3,6 +3,3 @@ name = "currency_treasury"
 edition = "2024"
 license = "MIT"
 authors = ["Unconfirmed Labs, LLC (os@unconfirmed.com)"]
-
-[environments]
-mirainet = "11235922"
