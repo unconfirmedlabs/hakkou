@@ -1,7 +1,7 @@
 // Copyright (c) Unconfirmed Labs, LLC
 // SPDX-License-Identifier: Apache-2.0
 
-module currency_treasury::currency_treasury;
+module hakkou::currency_treasury;
 
 use std::type_name::{TypeName, with_defining_ids};
 use sui::balance::{Self, Balance};
