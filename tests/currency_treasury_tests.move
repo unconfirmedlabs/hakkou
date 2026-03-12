@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #[test_only, allow(deprecated_usage)]
-module currency_treasury::currency_treasury_tests;
+module hakkou::currency_treasury_tests;
 
-use currency_treasury::currency_treasury::{
+use hakkou::currency_treasury::{
     Self,
     CurrencyTreasury,
     CurrencyTreasuryAdminCap,
