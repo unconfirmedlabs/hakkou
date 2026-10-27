@@ -117,7 +117,6 @@ public fun destroy<Currency>(
     cap: CurrencyTreasuryAdminCap<Currency>,
 ): TreasuryCap<Currency> {
     let CurrencyTreasury { id, treasury_cap, .. } = self;
-
     emit(CurrencyTreasuryDestroyedEvent<Currency> {
         treasury_id: id.to_inner(),
     });
@@ -170,7 +169,6 @@ public fun add_mint_authority<Currency, Authority: drop>(
 ) {
     let authority = with_defining_ids<Authority>();
     assert!(!self.mint_authorities.contains(&authority), EMintAuthorityAlreadyExists);
-
     self.mint_authorities.insert(authority);
     emit(MintAuthorityAddedEvent<Currency, Authority> {
         treasury_id: self.id(),
@@ -192,7 +190,6 @@ public fun remove_mint_authority<Currency, Authority: drop>(
 ) {
     let authority = with_defining_ids<Authority>();
     assert!(self.mint_authorities.contains(&authority), EMintAuthorityNotFound);
-
     self.mint_authorities.remove(&authority);
     emit(MintAuthorityRemovedEvent<Currency, Authority> {
         treasury_id: self.id(),
