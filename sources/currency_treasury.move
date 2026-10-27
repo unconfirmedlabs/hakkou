@@ -99,15 +99,12 @@ public fun new<Currency>(
         treasury_cap: treasury_cap,
         mint_authorities: vec_set::empty(),
     };
-
     let currency_treasury_admin_cap = CurrencyTreasuryAdminCap {
         id: object::new(ctx),
     };
-
     emit(CurrencyTreasuryCreatedEvent<Currency> {
         treasury_id: currency_treasury.id(),
     });
-
     (currency_treasury, currency_treasury_admin_cap)
 }
 
@@ -124,12 +121,9 @@ public fun destroy<Currency>(
     emit(CurrencyTreasuryDestroyedEvent<Currency> {
         treasury_id: id.to_inner(),
     });
-
     id.delete();
-
     let CurrencyTreasuryAdminCap { id } = cap;
     id.delete();
-
     treasury_cap
 }
 
@@ -152,13 +146,11 @@ public fun mint<Currency, Authority: drop>(
         self.mint_authorities.contains(&with_defining_ids<Authority>()),
         EUnauthorizedMintAuthority,
     );
-
     emit(CurrencyMintedEvent<Currency, Authority> {
         treasury_id: self.id(),
         value,
         minted_by: ctx.sender(),
     });
-
     self.treasury_cap.mint_balance(value)
 }
 
@@ -180,7 +172,6 @@ public fun add_mint_authority<Currency, Authority: drop>(
     assert!(!self.mint_authorities.contains(&authority), EMintAuthorityAlreadyExists);
 
     self.mint_authorities.insert(authority);
-
     emit(MintAuthorityAddedEvent<Currency, Authority> {
         treasury_id: self.id(),
     });
@@ -203,7 +194,6 @@ public fun remove_mint_authority<Currency, Authority: drop>(
     assert!(self.mint_authorities.contains(&authority), EMintAuthorityNotFound);
 
     self.mint_authorities.remove(&authority);
-
     emit(MintAuthorityRemovedEvent<Currency, Authority> {
         treasury_id: self.id(),
     });
@@ -232,14 +222,11 @@ public fun receive_and_burn<Currency>(
     ctx: &TxContext,
 ) {
     assert!(!coins_to_receive.is_empty(), ENoCoinsToReceive);
-
     let mut total_balance = balance::zero<Currency>();
-
     coins_to_receive.destroy!(|coin_to_receive| {
         let balance = transfer::public_receive(&mut self.id, coin_to_receive).into_balance();
         total_balance.join(balance);
     });
-
     burn_impl(self, total_balance, ctx);
 }
 
@@ -295,12 +282,10 @@ fun burn_impl<Currency>(
         balance.destroy_zero();
         return
     };
-
     emit(CurrencyBurnedEvent<Currency> {
         treasury_id: self.id(),
         value: balance.value(),
         burned_by: ctx.sender(),
     });
-
     self.treasury_cap.supply_mut().decrease_supply(balance);
 }
